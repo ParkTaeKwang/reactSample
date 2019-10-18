@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import ReadContent from "./components/ReadContent";
 import CreateContent from "./components/CreateContent";
+import UpdateContent from "./components/UpdateContent";
 import TOC from "./components/TOC";
 import Subject from "./components/Subject";
 import Control from "./components/Control";
+
 
 import './App.css';
 
@@ -25,9 +27,19 @@ import './App.css';
         ]
       }
     }
+    getReadContent(){
+      var i = 0;
+      while (i<this.state.contents.length){
+        var data = this.state.contents[i];
+        if(data.id === this.state.selected_content_id){
+          return data;
+          break;
+        }
+        i = i + 1;
+      }
 
-    render(){
-      console.log('App render');
+    }
+    getContent(){
       var _title, _desc = null, _article=null;
 
       if(this.state.mode === 'welcome'){
@@ -35,17 +47,8 @@ import './App.css';
         _desc = this.state.welcome.desc;
         _article = <ReadContent title={_title} desc={_desc}></ReadContent>
       } else if(this.state.mode === 'read'){
-        var i = 0;
-        while (i<this.state.contents.length){
-          var data = this.state.contents[i];
-          if(data.id === this.state.selected_content_id){
-            _title = data.title;
-            _desc = data.desc;
-            break;
-          }
-          i = i + 1;
-        }
-      _article = <ReadContent title={_title} desc={_desc}></ReadContent>
+       var _content = this.getReadContent();
+      _article = <ReadContent title={_content.title} desc={_content.desc}></ReadContent>
     } else if(this.state.mode === 'create'){
       _article = <CreateContent onSubmit={function (_title, _desc) {     
       // add content to this.state.contents
@@ -63,7 +66,31 @@ import './App.css';
       console.log(_title, _desc);
       }.bind(this)}></CreateContent>
 
+    } else if(this.state.mode === 'update'){
+      _content = this.getReadContent();
+      _article = <UpdateContent data={_content} onSubmit={function (_title, _desc) {     
+      // add content to this.state.contents
+      this.max_content_id = this.max_content_id + 1;   
+      //this.state.contents.push(
+      //  {id:this.max_content_id, title:_title, desc:_desc}
+      //);
+
+      var _contents = this.state.contents.concat(
+        {id:this.max_content_id, title:_title, desc:_desc}
+      )
+      this.setState({
+        contents:_contents
+      });
+      console.log(_title, _desc);
+      }.bind(this)}></UpdateContent>
+
     }
+    return _article;
+
+  }
+    render(){
+      console.log('App render');
+      
 
     return (
       <div className="App">
@@ -92,7 +119,7 @@ import './App.css';
           });
         }.bind(this)}></Control>
 
-        {_article}
+        {this.getContent()}
       </div>
     );
   } 
