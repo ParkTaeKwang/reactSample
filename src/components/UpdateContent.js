@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { SourceMapConsumer } from '../../../../Users/C2H5OH/AppData/Local/Microsoft/TypeScript/3.6/node_modules/source-map/source-map';
 
 class UpdateContent extends Component{
     constructor(props){
