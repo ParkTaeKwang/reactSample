@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
 
+
 class UpdateContent extends Component{
     constructor(props){
       super(props);
       this.state ={
+        id:this.props.data.id,
         title:this.props.data.title,
         desc:this.props.data.desc
       }
 
-      this.inputFormHandler = this.inputFormHandler.bind();
+      this.inputFormHandler = this.inputFormHandler.bind(this);
     }
     inputFormHandler(e){
       this.setState({[e.target.name]:e.target.value});   
-
     }
     render (){
       console.log("UP", this.props.data);
@@ -20,23 +21,24 @@ class UpdateContent extends Component{
       return (
         <article>
         <h2>Update</h2>
-        <form action="update" method="POST"
+        <form action="/create_process" method="POST"
           onSubmit={function(e){
               e.preventDefault();
               this.props.onSubmit(
-              e.target.title.value,
-              e.target.desc.value
+              this.state.id,
+              this.state.title,
+              this.state.desc
              );
-              alert('Submutt');              
-          }.bind(this)}
+           }.bind(this)}
         >
-          <p><input 
+          <input type="hidden" name="id" value={this.state.id}></input>
+          <input 
           type="text" 
           name="title" 
           placeholder="title"
           value={this.state.title}
           onChange={this.inputFormHandler}
-          ></input></p>
+          ></input>
           <p>
             <textarea 
             onChange={this.inputFormHandler}
