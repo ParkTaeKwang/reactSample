@@ -68,7 +68,7 @@ import './App.css';
              var _contents =  Array.from(this.state.contents);
              var i = 0;
              while( i< _contents.length){
-                if(_content[i].id === _id){
+                if(_contents[i].id === _id){
                   _contents[i] = {id:_id, title:_title, desc:_desc};
                   break;
                 }
