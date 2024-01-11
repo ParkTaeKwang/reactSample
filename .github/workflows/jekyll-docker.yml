@@ -12,9 +12,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the site in the jekyll/builder container
-      run: |
-        docker run \
-        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
+    - name: Checkout Source Code
+      uses: actions/checkout@v3
+    - name: Set up node.js 18.16.1
+      uses: actions/setup-node@v3 
+      with:
+        node-version: 18.16.1
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm install
+    # - runs: npm run test:e2e
+
+    # 도커 Hub 로그인
+    - name: Login Dockerhub
+      env:
+        DOCKER_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
+      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD      
+
+    # Docker 이미지 빌드
+    - name: Build the Docker image
+      run: docker build -t <이미지이름> .
+    # 이미지 태깅
+    - name: taging
+      run: docker tag <이미지이름>:latest <dockerhub계정이름>/<이미지이름>:latest 
+    # Dockerhub에 푸시 
+    - name: Push to Dockerhub
+      run: docker push <dockerhub계정이름>/<이미지이름>:latest 
