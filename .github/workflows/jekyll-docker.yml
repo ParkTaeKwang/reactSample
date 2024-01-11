@@ -19,8 +19,7 @@ jobs:
       with:
         node-version: 18.16.1
         cache: 'npm'
-    - name: npm cache clean
-      run: npm ci
+        path: ~/.npm
     - name: Install dependencies
       run: npm install
     # - runs: npm run test:e2e
