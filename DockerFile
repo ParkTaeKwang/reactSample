@@ -8,7 +8,7 @@ ADD . /app
 // 경로를 /app 으로 이동한 뒤에
 // ADD 로 모든 파일을 /app 으로 복사한다
 
-RUN npm install
+yarn build
 // yarn 이면 yarn install 하면 되겠지? yarn build 인가?
 // 이 명령어가 틀리면 에러가 발생하니 에러가 나면 확인해보면서 바꿔주면 된다.
 
