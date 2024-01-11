@@ -19,6 +19,8 @@ jobs:
       with:
         node-version: 18.16.1
         cache: 'npm'
+    - name: npm cache verify
+      run: npm cache verify
     - name: Install dependencies
       run: npm install
     # - runs: npm run test:e2e
