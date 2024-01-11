@@ -32,10 +32,10 @@ jobs:
 
     # Docker 이미지 빌드
     - name: Build the Docker image
-      run: docker build -t <이미지이름> .
+      run: docker build -t iesay .
     # 이미지 태깅
     - name: taging
-      run: docker tag <이미지이름>:latest <dockerhub계정이름>/<이미지이름>:latest 
+      run: docker tag iesay:latest kopi2642/iesay:latest 
     # Dockerhub에 푸시 
     - name: Push to Dockerhub
-      run: docker push <dockerhub계정이름>/<이미지이름>:latest 
+      run: docker push kopi2642/iesay:latest 
