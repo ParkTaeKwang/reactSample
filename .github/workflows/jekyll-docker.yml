@@ -20,10 +20,10 @@ jobs:
         node-version: 18.16.1
         cache: 'npm'
         path: ~/.npm
-    - name: clean cache
-      run: npm cache clean --force
-    #- name: Install dependencies
-    #  run: npm install
+    # - name: clean cache
+    # run: npm cache clean --force
+    - name: Install dependencies
+      run: npm install -g n
     # - runs: npm run test:e2e
 
     # 도커 Hub 로그인
