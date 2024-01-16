@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 env:
-  ecr_url: 238853424118.dkr.ecr.ap-northeast-2.amazonaws.com/reactsamplei
+  ecr_url: 238853424118.dkr.ecr.ap-northeast-2.amazonaws.com/reactsample
   role_arn: arn:aws:iam::238853424118:role/github-role
   aws_region: ap-northeast-2
 
@@ -41,8 +41,8 @@ jobs:
       run: npm install -g n
     # - runs: npm run test:e2e
 
-    - name: Docker build movie-api
-      run: docker build -t movie-api ./
+    - name: Docker build reactsample
+      run: docker build -t reactsample ./
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1-node16
