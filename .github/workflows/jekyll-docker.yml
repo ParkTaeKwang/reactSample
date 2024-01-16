@@ -6,10 +6,25 @@ on:
   pull_request:
     branches: [ "master" ]
 
+env:
+  ecr_url: 238853424118.dkr.ecr.ap-northeast-2.amazonaws.com/reactsamplei
+  role_arn: arn:aws:iam::238853424118:role/github-role
+  aws_region: ap-northeast-2
+
+
 jobs:
   build:
 
     runs-on: self-hosted
+
+
+    permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read    # This is required for actions/checkout
+
+    outputs:
+      tag_date: ${{ steps.tag.outputs.date }}
+      tag_git_hash: ${{ steps.tag.outputs.git_hash }}
 
     steps:
     - name: Checkout Source Code
@@ -26,19 +41,37 @@ jobs:
       run: npm install -g n
     # - runs: npm run test:e2e
 
+    - name: Docker build movie-api
+      run: docker build -t movie-api ./
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1-node16
+      with:
+        aws-region: ${{ env.aws_region }}
+        role-session-name: GitHubActions
+        role-to-assume: ${{ env.role_arn }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Publish Image to ECR(reactsample)
+      run: |
+  
+
     # 도커 Hub 로그인
-    - name: Login Dockerhub
-      env:
-        DOCKER_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
-        DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
-      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD      
+    #- name: Login Dockerhub
+    #  env:
+    #    DOCKER_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
+    #    DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
+    #  run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD      
 
     # Docker 이미지 빌드
-    - name: Build the Docker image
-      run: docker build -t iesay .
+    #- name: Build the Docker image
+    #  run: docker build -t iesay .
     # 이미지 태깅
-    - name: taging
-      run: docker tag iesay:latest kopi2642/iesay:latest 
+    #- name: taging
+    #  run: docker tag iesay:latest kopi2642/iesay:latest 
     # Dockerhub에 푸시 
-    - name: Push to Dockerhub
-      run: docker push kopi2642/iesay:latest 
+    #- name: Push to Dockerhub
+    #  run: docker push kopi2642/iesay:latest 
