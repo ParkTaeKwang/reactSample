@@ -12,6 +12,7 @@ env:
   aws_region: ap-northeast-2
 
 
+
 jobs:
   build:
 
@@ -44,7 +45,7 @@ jobs:
       run: docker build -t reactsample ./
 
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1-node16
+      uses: aws-actions/configure-aws-credentials@v1-node14
       with:
         aws-region: ${{ env.aws_region }}
         role-session-name: GitHubActions
