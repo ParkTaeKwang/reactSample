@@ -14,10 +14,10 @@ jobs:
     steps:
     - name: Checkout Source Code
       uses: actions/checkout@v3
-    - name: Set up node.js 10.19.0
+    - name: Set up node.js 14.10.0
       uses: actions/setup-node@v3 
       with:
-        node-version: 10.19.0
+        node-version: 14.10.0
         cache: 'npm'
         path: ~/.npm
     # - name: clean cache
