@@ -11,18 +11,21 @@ on:
   #role_arn: arn:aws:iam::238853424118:role/github-role
   #aws_region: ap-northeast-2
 
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+  
 
 jobs:
   build:
 
     runs-on: self-hosted
     steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v3
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v3
         with:
          role-to-assume: arn:aws:iam::238853424118:role/github-action-s3
+         role-session-name: samplerolesession
          aws-region: ap-northeast-2   
  
       # Upload a file to AWS s3
