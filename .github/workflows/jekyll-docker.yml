@@ -16,47 +16,13 @@ jobs:
   build:
 
     runs-on: self-hosted
-
-    permissions:
-      id-token: write   # This is required for requesting the JWT
-      contents: read    # This is required for actions/checkout
-
-    outputs:
-      tag_date: ${{ steps.tag.outputs.date }}
-      tag_git_hash: ${{ steps.tag.outputs.git_hash }}
-
     steps:
-    - name: Checkout Source Code
-      uses: actions/checkout@v2
-    - name: Set up node.js 16.10.0
-      uses: actions/setup-node@v2 
-      with:
-        node-version: 16.10.0
-        cache: 'npm'
-        path: ~/.npm
-    # - name: clean cache
-    # run: npm cache clean --force
-    - name: Install dependencies
-      run: npm install -g n
-    # - runs: npm run test:e2e
-
-    - name: Docker build reactsample
-      run: docker build -t reactsample ./
-
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1-node16
-      with:
-        aws-region: ${{ env.aws_region }}
-        role-session-name: GitHubActions
-        role-to-assume: ${{ env.role_arn }}
-
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-
-    - name: Publish Image to ECR(reactsample)
-      run: |
-  
+     - name: Configure AWS Credentials
+       uses: aws-actions/configure-aws-credentials@v1
+       with:
+          role-to-assume: arn:aws:iam::238853424118:role/githubactionstest
+          aws-region: ap-northeast-2
+ 
 
     # 도커 Hub 로그인
     #- name: Login Dockerhub
