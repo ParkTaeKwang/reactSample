@@ -17,11 +17,21 @@ jobs:
 
     runs-on: self-hosted
     steps:
-     - name: Configure AWS Credentials
-       uses: aws-actions/configure-aws-credentials@v1
-       with:
-          role-to-assume: arn:aws:iam::238853424118:role/github-action-s3
-          aws-region: ap-northeast-2
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+         role-to-assume: arn:aws:iam::238853424118:role/github-action-s3
+         role-session-name: samplerolesession
+         aws-region: ap-northeast-2   
+ 
+      # Upload a file to AWS s3
+      - name:  Copy index.html to s3
+        run: |
+          aws s3 cp ./index.html s3://${{ env.BUCKET_NAME }}/
+
+          
  
 
     # 도커 Hub 로그인
