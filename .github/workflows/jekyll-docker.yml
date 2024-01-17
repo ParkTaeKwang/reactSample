@@ -20,10 +20,9 @@ jobs:
       - name: Git clone the repository
         uses: actions/checkout@v3
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
          role-to-assume: arn:aws:iam::238853424118:role/github-action-s3
-         role-session-name: samplerolesession
          aws-region: ap-northeast-2   
  
       # Upload a file to AWS s3
