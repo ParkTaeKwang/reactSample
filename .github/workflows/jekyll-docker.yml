@@ -56,7 +56,8 @@ jobs:
 
     - name: Publish Image to ECR(reactsample)
       run: |
-  
+          docker tag reactsample:latest 238853424118.dkr.ecr.ap-northeast-2.amazonaws.com/reactsample:latest
+          docker push 238853424118.dkr.ecr.ap-northeast-2.amazonaws.com/reactsample:latest
 
     # 도커 Hub 로그인
     #- name: Login Dockerhub
