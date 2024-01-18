@@ -6,35 +6,57 @@ on:
   pull_request:
     branches: [ "master" ]
 
-#env:
-  #ecr_url: 238853424118.dkr.ecr.ap-northeast-2.amazonaws.com/reactsample
-  #role_arn: arn:aws:iam::238853424118:role/github-role
-  #aws_region: ap-northeast-2
+env:
+  ecr_url: 238853424118.dkr.ecr.ap-northeast-2.amazonaws.com/reactsample
+  role_arn: arn:aws:iam::238853424118:role/github-role
+  aws_region: ap-northeast-2
 
-permissions:
-  id-token: write   # This is required for requesting the JWT
-  contents: read    # This is required for actions/checkout
-  
 
 jobs:
   build:
 
     runs-on: self-hosted
+
+    permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read    # This is required for actions/checkout
+
+    outputs:
+      tag_date: ${{ steps.tag.outputs.date }}
+      tag_git_hash: ${{ steps.tag.outputs.git_hash }}
+
     steps:
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-         role-to-assume: arn:aws:iam::238853424118:role/github-action-s3
-         role-session-name: samplerolesession
-         aws-region: ap-northeast-2   
- 
-      # Upload a file to AWS s3
-      - name:  Copy index.html to s3
-        run: |
-          ls -al
-          pwd
-          aws s3 cp index.html s3://s3-deploy/reactSample/
-          
+    - name: Checkout Source Code
+      uses: actions/checkout@v2
+    - name: Set up node.js 16.10.0
+      uses: actions/setup-node@v2 
+      with:
+        node-version: 16.10.0
+        cache: 'npm'
+        path: ~/.npm
+    # - name: clean cache
+    # run: npm cache clean --force
+    - name: Install dependencies
+      run: npm install -g n
+    # - runs: npm run test:e2e
+
+    - name: Docker build reactsample
+      run: docker build -t reactsample ./
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1-node16
+      with:
+        aws-region: ${{ env.aws_region }}
+        role-session-name: GitHubActions
+        role-to-assume: ${{ env.role_arn }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Publish Image to ECR(reactsample)
+      run: |
+  
 
     # 도커 Hub 로그인
     #- name: Login Dockerhub
@@ -51,4 +73,4 @@ jobs:
     #  run: docker tag iesay:latest kopi2642/iesay:latest 
     # Dockerhub에 푸시 
     #- name: Push to Dockerhub
-    #  run: docker push kopi2642/iesay:latest 
+    #  run: docker push kopi2642/iesay:latest
