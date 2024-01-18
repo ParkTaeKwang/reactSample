@@ -8,7 +8,7 @@ on:
 
 env:
   ecr_url: 238853424118.dkr.ecr.ap-northeast-2.amazonaws.com/reactsample
-  role_arn: arn:aws:iam::238853424118:role/github-role
+  role_arn: arn:aws:iam::238853424118:role/github-action-s3
   aws_region: ap-northeast-2
 
 
