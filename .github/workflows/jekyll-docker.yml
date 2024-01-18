@@ -33,7 +33,7 @@ jobs:
         run: |
           ls -al
           pwd
-          aws s3 cp ../public/index.html s3://s3-deploy/reactSample/
+          aws s3 cp index.html s3://s3-deploy/reactSample/
           
 
     # 도커 Hub 로그인
