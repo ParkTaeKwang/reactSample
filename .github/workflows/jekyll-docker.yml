@@ -31,7 +31,7 @@ jobs:
       # Upload a file to AWS s3
       - name:  Copy index.html to s3
         run: |
-          aws s3 cp ./public/index.html s3://s3-deploy/reactSample/
+          aws s3 cp /public/index.html s3://s3-deploy/reactSample/
           
 
     # 도커 Hub 로그인
