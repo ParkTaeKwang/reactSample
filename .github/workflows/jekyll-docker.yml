@@ -7,8 +7,8 @@ on:
     branches: [ "master" ]
 
 env:
-  ecr_url: 238853424118.dkr.ecr.ap-northeast-2.amazonaws.com/reactsample
-  role_arn: arn:aws:iam::238853424118:role/github-action-s3
+  ecr_url: 677931183417.dkr.ecr.ap-northeast-2.amazonaws.com/reactsample
+  role_arn: arn:aws:iam::677931183417:role/github-action
   aws_region: ap-northeast-2
 
 
@@ -56,8 +56,8 @@ jobs:
 
     - name: Publish Image to ECR(reactsample)
       run: |
-          docker tag reactsample:latest 238853424118.dkr.ecr.ap-northeast-2.amazonaws.com/reactsample:latest
-          docker push 238853424118.dkr.ecr.ap-northeast-2.amazonaws.com/reactsample:latest
+          docker tag reactsample:latest 677931183417.dkr.ecr.ap-northeast-2.amazonaws.com/reactsample:latest
+          docker push 677931183417.dkr.ecr.ap-northeast-2.amazonaws.com/reactsample:latest
 
     # 도커 Hub 로그인
     #- name: Login Dockerhub
